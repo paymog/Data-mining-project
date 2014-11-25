@@ -1,0 +1,16 @@
+- Read in accept data
+- Clean accept data (ie: not everything is a string)
+- Read in reject data
+- Clean reject data
+- Remove useless columns from both data sources
+- Generate histograms for loan amounts
+- Generate histograms for annual income
+    - Histograms sucked, turns out people with reported incomes of over 1 million need loans too
+- Generate histograms of annual income for all but the 1000 richest applicants
+- Generate histograms of open accounts
+- Generate histograms of loan request vs loan provided (ie: was the loan request fully satisfied).
+    - Yeah, for the most part loans were fully satisfied. Data uninteresting
+- Nobody applied for a loan from Maine or North Dakota
+- Generate histograms of states
+     - As we'd expect, more populated states have higher applications
+     - Normalized the histograms based on state population
