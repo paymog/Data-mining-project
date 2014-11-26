@@ -14,3 +14,8 @@
 - Generate histograms of states
      - As we'd expect, more populated states have higher applications
      - Normalized the histograms based on state population
+- Tried clustering Risk scores for rejection. Decided there's enough data for each risk score to be treated independently
+- Generated normalized historgrams for state
+- Decided to clean up data for both accept and reject to only have data from the years 2012 and 2013. There are 10x
+  as many rejections as there are acceptances.
+- Updated file loading to load cleaned data. This is way faster and lets us keep track of the data
