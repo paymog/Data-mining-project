@@ -3,6 +3,8 @@ from matplotlib import pyplot as py
 from datetime import datetime
 from sklearn.cluster import KMeans
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.cross_validation import cross_val_score
+from sklearn.metrics import confusion_matrix
 
 
 def remove_accept_columns(row):
@@ -184,7 +186,10 @@ def extract_column(data, index):
     :param index: the indexo of the column to extract
     :return: a list of data corresponding to a column
     """
-    return np.array([row[index] for row in data])
+    if isinstance(index, list):
+        return np.array([[row[i] for i in index] for row in data])
+    else:
+        return np.array([row[index] for row in data])
 
 
 def add_column(data, column):
@@ -201,6 +206,30 @@ def add_column(data, column):
     """
     for row, value in zip(data, column):
         row.append(value)
+
+
+def find_cluster_ranges(cluster_values, data, original_index):
+    """
+    Finds the range of values values assigned to each cluster. To put it another way, it finds the min and max
+    values assigned to each cluster.
+    :param cluster_values: the result of clustering and predicting data
+    :param data: the original data. A matrix.
+    :param original_index: the column which was clustered upon
+    :return: a list of lists where the first element in the inner list is the min value of the ith cluster and the second
+    value is the max
+    """
+    cluster_ranges = [[999999999, -999999999] for _ in range(len(set(cluster_values)))]
+
+    assert (len(cluster_values) == len(data))
+
+    for cluster_value, data_point in zip(cluster_values, extract_column(data, original_index)):
+        if data_point < cluster_ranges[cluster_value][0]:
+            cluster_ranges[cluster_value][0] = data_point
+
+        if data_point > cluster_ranges[cluster_value][1]:
+            cluster_ranges[cluster_value][1] = data_point
+
+    return cluster_ranges
 
 
 def generate_histograms(data, column_index, column_name, bin_counts=[10, 20, 30, 40, 50],
@@ -277,6 +306,7 @@ def cluster_and_scatter_plot(data, data_label, num_clusters, figsize=(17, 9), n=
     :param num_clusters: the number of clusters to create
     :param figsize: the size of the figure to produce. The default is good for 13 macbook pro retina
     :param n: The number of points to plot. If less than 0 then all points will be plotted.
+    :return: the result of clustering. A list of integers indicating the cluster of each data point
     """
     if n < 0:
         n = len(data)
@@ -287,6 +317,8 @@ def cluster_and_scatter_plot(data, data_label, num_clusters, figsize=(17, 9), n=
     py.scatter(data[:n], np.random.normal(1, 0.1, n), c=cluster_values[:n])
     py.title("%s clustering of first %d data points with %d clusters" % (data_label, n, num_clusters))
     py.show()
+
+    return cluster_values
 
 
 def kmeans(data, num_clusters=8):
@@ -306,6 +338,23 @@ def kmeans(data, num_clusters=8):
     return k.fit_predict(data)
 
 
+def decision_tree_classifier(data, predictor_columns, predicted_column, depth, random_state=None, print_confusion_matrix=False):
+    columns = extract_column(data, predictor_columns)
+    loan_status = extract_column(data, predicted_column)
+
+    if not isinstance(depth, list):
+        depth = [depth]
+
+    for d in depth:
+        tree = DecisionTreeClassifier(max_depth=d, random_state=random_state)
+        tree.fit(columns[0::2], loan_status[0::2])
+
+        print "Score for depth %d is %f" % (d, tree.score(columns[1::2], loan_status[1::2]))
+        if print_confusion_matrix:
+            print "Confusion matrix is:"
+            print confusion_matrix(loan_status[1::2], tree.predict(columns[1::2]))
+
+
 def main():
     state_dict = {"AL": 0, "AK": 1, "AZ": 2, "AR": 3, "CA": 4, "CO": 5, "CT": 6, "DE": 7, "DC": 8, "FL": 9, "GA": 10,
                   "HI": 11, "ID": 12, "IL": 13, "IN": 14, "IA": 15, "KS": 16, "KY": 17, "LA": 18, "MD": 19, "MA": 20,
@@ -316,7 +365,7 @@ def main():
 
     # accept data
     # -----------------
-    col, data = load_clean_accept_data("cleanedAcceptData.csv")
+    # col, data = load_clean_accept_data("cleanedAcceptData.csv")
 
     # generate_histograms(data, 0, col[0])
     # generate_histograms(data, 11, col[11], remove_extreme_values=True, remove_count=1000, remove_from_lower=False)
@@ -324,14 +373,21 @@ def main():
     # generate_histograms(data, 9, col[9], bin_counts=[np.arange(12) - 0.5], normalize=True)
     # generate_normalized_state_histogram(data, 18, state_dict, 1000)
     # generate_histograms(data, 4, col[4])
-    cluster_and_scatter_plot(extract_column(data, 11), "Income", 8, n=10000)
+    # cluster_values = cluster_and_scatter_plot(extract_column(data, 11), "Income", 8, n=10000)
+    # decision_tree_classifier(data, [0, 3, 4, 7, 9, 10, 11, 20, 22], 14, 12, random_state=0) # make decision tree for loan status
 
     # reject data
     # -----------------
-    # col, data = load_cleaned_reject_data("cleanedRejectData.csv")
+    col, data = load_cleaned_reject_data("cleanedRejectData.csv")
 
     # generate_histograms(data, 6, col[6], bin_counts=[np.arange(12) - 0.5], normalize=True)
+    # generate_histograms(data, 3, col[3])
     # generate_normalized_state_histogram(data, 5, state_dict, 200)
+
+    # decision tree classifier for risk_score
+    # risk_score_clusters = kmeans(extract_column(data, 3), num_clusters=10)
+    # add_column(data, risk_score_clusters)
+    # decision_tree_classifier(data, [0, 4, 6], -1, 8, random_state=0)
 
 
 if __name__ == "__main__":

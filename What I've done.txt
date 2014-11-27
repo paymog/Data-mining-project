@@ -19,10 +19,15 @@
 - Decided to clean up data for both accept and reject to only have data from the years 2012 and 2013. There are 10x
   as many rejections as there are acceptances.
 - Updated file loading to load cleaned data. This is way faster and lets us keep track of the data
+- doing kmeans is "easy" now
+- tried make a decision tree classifier for loan_status. Most of the entires have a loan_status of current and thus
+    the results weren't promising. Acheived 70% accuracy but most of that was from correcly classifying the ~65000
+    "current" entries correctly
+- tried making a decision tree for risk_score of rejected loans. 27% accuracy with depth of 12 and clustering scores into
+    10 clusters. Will try more depths. Depth 8 was best
 
 -extracting specific columns (funds requests, emp_title, annual income, reason for loan)
-    - using these columns to do some apriori pattern mining
-    - put the loan and income values into 'bin' of intervals of 1000
+    - using these columns to do some apriori pattern mining    - put the loan and income values into 'bin' of intervals of 1000
         - this will aide in the groupings of the data
     - generated rules based on the 4 columns listed above
     - Apriori_rules.txt
