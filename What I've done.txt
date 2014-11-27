@@ -19,3 +19,6 @@
 - Decided to clean up data for both accept and reject to only have data from the years 2012 and 2013. There are 10x
   as many rejections as there are acceptances.
 - Updated file loading to load cleaned data. This is way faster and lets us keep track of the data
+
+-extracting specific columns (funds requests, emp_title, annual income, reason for loan)
+    - using these columns to do some apriori pattern mining
