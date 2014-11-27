@@ -144,6 +144,7 @@ def load_original_reject_data(file_name, state_dict):
 
     return column_labels, data
 
+
 def load_cleaned_reject_data(file_name):
     data = []
     with open(file_name) as f:
@@ -157,7 +158,7 @@ def load_cleaned_reject_data(file_name):
             d[4] = float(d[4])
             d[5:] = map(int, d[5:])
 
-            assert(len(d) == len(line.split("||")))
+            assert (len(d) == len(line.split("||")))
 
             data.append(d)
 
@@ -268,6 +269,43 @@ def generate_normalized_state_histogram(data, column_index, state_dict, normaliz
     py.show()
 
 
+def cluster_and_scatter_plot(data, data_label, num_clusters, figsize=(17, 9), n=-1):
+    """
+    Clusters data and makes a scatter plot
+    :param data: the data to cluster
+    :param data_label: the label of the data (used for setting the title of the plot)
+    :param num_clusters: the number of clusters to create
+    :param figsize: the size of the figure to produce. The default is good for 13 macbook pro retina
+    :param n: The number of points to plot. If less than 0 then all points will be plotted.
+    """
+    if n < 0:
+        n = len(data)
+
+    cluster_values = kmeans(data, num_clusters=num_clusters)
+
+    py.figure(num=1, figsize=figsize)
+    py.scatter(data[:n], np.random.normal(1, 0.1, n), c=cluster_values[:n])
+    py.title("%s clustering of first %d data points with %d clusters" % (data_label, n, num_clusters))
+    py.show()
+
+
+def kmeans(data, num_clusters=8):
+    """
+    Performs kmeans on data and returns the cluster value of each data point.
+    :param data: the data to cluster
+    :param num_clusters: the number of cluster to create
+    :return: a list of integers ranging from 0 to num_clusters - 1. Each element is the cluster value of the corresponding data point
+    """
+
+    # if data is just a column we need to make sure shape reflects that accurately
+    if len(data.shape) == 1:
+        data.shape = (data.shape[0], 1)
+
+    k = KMeans(n_clusters=num_clusters, n_jobs=4)
+
+    return k.fit_predict(data)
+
+
 def main():
     state_dict = {"AL": 0, "AK": 1, "AZ": 2, "AR": 3, "CA": 4, "CO": 5, "CT": 6, "DE": 7, "DC": 8, "FL": 9, "GA": 10,
                   "HI": 11, "ID": 12, "IL": 13, "IN": 14, "IA": 15, "KS": 16, "KY": 17, "LA": 18, "MD": 19, "MA": 20,
@@ -285,7 +323,8 @@ def main():
     # generate_histograms(data, 22, col[22])
     # generate_histograms(data, 9, col[9], bin_counts=[np.arange(12) - 0.5], normalize=True)
     # generate_normalized_state_histogram(data, 18, state_dict, 1000)
-    generate_histograms(data, 4, col[4])
+    # generate_histograms(data, 4, col[4])
+    cluster_and_scatter_plot(extract_column(data, 11), "Income", 8, n=10000)
 
     # reject data
     # -----------------
