@@ -5,6 +5,7 @@ temp.csv
 temp2.csv
 temp3.csv
 temp4.csv
+*.pyc
 
 .idea/*
 .DS_STORE
