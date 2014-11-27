@@ -114,7 +114,7 @@ def load_clean_accept_data(file_name):
     return column_labels, data
 
 
-def load_reject_data(file_name, state_dict):
+def load_original_reject_data(file_name, state_dict):
     data = []
     with open(file_name) as f:
         column_labels = map(lambda x: x.strip("\" \n"), f.readline().split(","))
@@ -199,9 +199,10 @@ def generate_histograms(data, column_index, column_name, bin_counts=[10, 20, 30,
         print "Max (after removal)= %d" % max(histogram_data)
 
     for bin_count in bin_counts:
-        py.hist(histogram_data, bin_count, alpha=0.75, normed=normalize)
+        n, bins, patches = py.hist(histogram_data, bin_count, alpha=0.75, normed=normalize)
         py.title(column_name)
         py.xlim([min(histogram_data) - 1, max(histogram_data) + 1])
+        py.xticks(bins, rotation='vertical')
         py.show()
 
 
@@ -254,22 +255,24 @@ def main():
                   "NY": 31, "NC": 32, "OH": 33, "OK": 34, "OR": 35, "PA": 36, "RI": 37, "SC": 38, "SD": 39, "TN": 40,
                   "TX": 41, "UT": 42, "VT": 43, "VA": 44, "WA": 45, "WV": 46, "WI": 47, "WY": 48, "ME": 49, "ND": 50}
 
+
+    # accept data
+    # -----------------
     col, data = load_clean_accept_data("cleanedAcceptData.csv")
 
-    # accept histograms
-    # -----------------
-    generate_histograms(data, 0, col[0])
-    generate_histograms(data, 11, col[11], remove_extreme_values=True, remove_count=1000, remove_from_lower=False)
-    generate_histograms(data, 22, col[22])
-    generate_histograms(data, 9, col[9], bin_counts=[np.arange(12) - 0.5], normalize=True)
-    generate_normalized_state_histogram(data, 18, state_dict, 1000)
+    # generate_histograms(data, 0, col[0])
+    # generate_histograms(data, 11, col[11], remove_extreme_values=True, remove_count=1000, remove_from_lower=False)
+    # generate_histograms(data, 22, col[22])
+    # generate_histograms(data, 9, col[9], bin_counts=[np.arange(12) - 0.5], normalize=True)
+    # generate_normalized_state_histogram(data, 18, state_dict, 1000)
+    generate_histograms(data, 4, col[4])
 
-    col, data = load_cleaned_reject_data("cleanedRejectData.csv")
-
-    # reject histograms
+    # reject data
     # -----------------
-    generate_histograms(data, 6, col[6], bin_counts=[np.arange(12) - 0.5], normalize=True)
-    generate_normalized_state_histogram(data, 5, state_dict, 200)
+    # col, data = load_cleaned_reject_data("cleanedRejectData.csv")
+
+    # generate_histograms(data, 6, col[6], bin_counts=[np.arange(12) - 0.5], normalize=True)
+    # generate_normalized_state_histogram(data, 5, state_dict, 200)
 
 
 if __name__ == "__main__":
