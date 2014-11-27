@@ -82,10 +82,10 @@ print("First 10 rows of filtered data:\n")
 i = 0
 for i in range(0, 10):
     print(filtered_data[i])
-    
+
 print("Frequent itemsets:\n")
 # Find frequent itemsets - apriorialg.py
-L, support_data = ap.apriori(filtered_data[0:10000], 0.02)
+L, support_data = ap.apriori(filtered_data, 0.02)
 print(support_data)
 
 # Generate rules - apriorialg.py
