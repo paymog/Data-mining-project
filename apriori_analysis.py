@@ -73,13 +73,13 @@ def get_col(col_names, data, extract):
         for element in row:
             new_row.append(col_names[col] + ": " + str(element))
         filtered_data.append(new_row)
-    return filtered_data
+    return np.array(filtered_data).T
+
 
 
 col, data = analysis.load_clean_accept_data("cleanedAcceptData.csv")
 
-filtered_columns = get_col(col, data, [0, 8, 11, 16])
-filtered_data = np.array(filtered_columns).T
+filtered_data = get_col(col, data, [0, 8, 11, 16])
 
 # just to test
 print("First 10 rows of filtered data:\n")
