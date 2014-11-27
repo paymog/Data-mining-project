@@ -22,3 +22,5 @@
 
 -extracting specific columns (funds requests, emp_title, annual income, reason for loan)
     - using these columns to do some apriori pattern mining
+    - put the loan and income values into 'bin' of intervals of 1000
+        - this will aide in the groupings of the data

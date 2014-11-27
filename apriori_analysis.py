@@ -64,11 +64,15 @@ def get_col(col_names, data, extract):
     filtered_data = []
     for col in extract:
         row = analysis.extract_column(data, col)
+        rounded = []
+        if isinstance(row[0], int) or isinstance(row[0], float):  # it's an int
+            for item in row:
+                rounded.append(int(m.floor(item/1000.0) * 1000.0))
+            row = rounded
         new_row = []
         for element in row:
             new_row.append(col_names[col] + ": " + str(element))
         filtered_data.append(new_row)
-
     return filtered_data
 
 
