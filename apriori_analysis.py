@@ -90,7 +90,6 @@ for i in range(0, 10):
 print("Frequent itemsets:\n")
 # Find frequent itemsets - apriorialg.py
 L, support_data = ap.apriori(filtered_data, 0.02)
-print(support_data)
 
 # Generate rules - apriorialg.py
 rules = ap.generateRules(L, support_data, 0.50)

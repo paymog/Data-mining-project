@@ -1,0 +1,17 @@
+
+Rules:
+
+frozenset(['annual_inc: 50000']) ---> frozenset(['purpose: debt_consolidation']) conf: 0.598390
+frozenset(['emp_title: ']) ---> frozenset(['purpose: debt_consolidation']) conf: 0.502907
+frozenset(['loan_amnt: 35000']) ---> frozenset(['purpose: debt_consolidation']) conf: 0.639993
+frozenset(['loan_amnt: 10000']) ---> frozenset(['purpose: debt_consolidation']) conf: 0.572176
+frozenset(['loan_amnt: 20000']) ---> frozenset(['purpose: debt_consolidation']) conf: 0.657361
+frozenset(['loan_amnt: 12000']) ---> frozenset(['purpose: debt_consolidation']) conf: 0.617928
+frozenset(['loan_amnt: 15000']) ---> frozenset(['purpose: debt_consolidation']) conf: 0.627975
+frozenset(['loan_amnt: 9000']) ---> frozenset(['purpose: debt_consolidation']) conf: 0.596503
+frozenset(['loan_amnt: 6000']) ---> frozenset(['purpose: debt_consolidation']) conf: 0.520426
+frozenset(['loan_amnt: 8000']) ---> frozenset(['purpose: debt_consolidation']) conf: 0.565885
+frozenset(['loan_amnt: 18000']) ---> frozenset(['purpose: debt_consolidation']) conf: 0.658306
+frozenset(['loan_amnt: 16000']) ---> frozenset(['purpose: debt_consolidation']) conf: 0.641770
+frozenset(['loan_amnt: 7000']) ---> frozenset(['purpose: debt_consolidation']) conf: 0.544356
+frozenset(['annual_inc: 60000']) ---> frozenset(['purpose: debt_consolidation']) conf: 0.613691

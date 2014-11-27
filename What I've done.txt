@@ -24,3 +24,5 @@
     - using these columns to do some apriori pattern mining
     - put the loan and income values into 'bin' of intervals of 1000
         - this will aide in the groupings of the data
+    - generated rules based on the 4 columns listed above
+    - Apriori_rules.txt
