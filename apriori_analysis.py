@@ -3,11 +3,7 @@
 import apriorialg as ap
 import math as m
 import analysis
-from matplotlib import pyplot as py
-from datetime import datetime
-from copy import copy, deepcopy
 import numpy as np
-import re
 
 
 def print_rules(rules):
@@ -64,25 +60,34 @@ def phi(rules):
         print("phi-coefficient value for %s ---> %s: %f" % (antecedent, conseq, phi))
     print('\n')
 
-def get_col(data, extract):
+def get_col(col_names, data, extract):
     filtered_data = []
     for col in extract:
-        filtered_data.append(analysis.extract_column(data, col))
+        row = analysis.extract_column(data, col)
+        new_row = []
+        for element in row:
+            new_row.append(col_names[col] + ": " + str(element))
+        filtered_data.append(new_row)
+
     return filtered_data
 
 
 col, data = analysis.load_clean_accept_data("cleanedAcceptData.csv")
 
-filtered_columns = get_col(data, [0, 8, 11, 16])
+filtered_columns = get_col(col, data, [0, 8, 11, 16])
 filtered_data = np.array(filtered_columns).T
 
 # just to test
+print("First 10 rows of filtered data:\n")
 i = 0
 for i in range(0, 10):
     print(filtered_data[i])
+    
+print("Frequent itemsets:\n")
 # Find frequent itemsets - apriorialg.py
-#L, support_data = ap.apriori(filtered_data, 0.3)
+L, support_data = ap.apriori(filtered_data[0:10000], 0.02)
+print(support_data)
 
 # Generate rules - apriorialg.py
-#rules = ap.generateRules(L, support_data, 0.70)
-#print_rules(rules)
+rules = ap.generateRules(L, support_data, 0.50)
+print_rules(rules)
