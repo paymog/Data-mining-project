@@ -174,10 +174,30 @@ def write_file(file_name, data, headers=None, separator="||"):
 
 
 def extract_column(data, index):
+    """
+    Given a matrix of data and some index this will get all of the values in index-th column
+
+    ie: data = [[1, 2, 3], [4, 5, 6,]]
+    extract_column(data, 1) returns [2, 5]
+    :param data: the matrix of data
+    :param index: the indexo of the column to extract
+    :return: a list of data corresponding to a column
+    """
     return np.array([row[index] for row in data])
 
 
 def add_column(data, column):
+    """
+    Given a matrix, this adds a column to the right side
+
+    ie: data = [[1,2,3],[4,5,6]]
+    column = [7,8]
+
+    data becomes [[1,2,3,7],[4,5,6,8]]
+    :param data: a matrix of data
+    :param column: the column to append to the matrix
+    :return: nothing, the matrix is changed directly
+    """
     for row, value in zip(data, column):
         row.append(value)
 
@@ -208,10 +228,10 @@ def generate_histograms(data, column_index, column_name, bin_counts=[10, 20, 30,
 
 def generate_normalized_state_histogram(data, column_index, state_dict, normalization_factor):
     """
-
+    Generates histograms of state counts based on state counts normalized by population
     :param data:
     :param column_index:
-    :param state_dict:
+    :param state_dict: a dictionary mapping state abbreviations to integers
     :param normalization_factor: Needed because the number of samples may be really small compared to population. Should
     be 1000 for Accept data and about 250 for reject data
     :return:
