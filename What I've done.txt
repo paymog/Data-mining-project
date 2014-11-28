@@ -25,6 +25,8 @@
     "current" entries correctly
 - tried making a decision tree for risk_score of rejected loans. 27% accuracy with depth of 12 and clustering scores into
     10 clusters. Will try more depths. Depth 8 was best
+- classifier for grade. Got about 40% accuracy. Jumped to 99% accuracy when including interest rate as a predictor.
+  I highly suspect that grades and interst rates have a 1-to-1 correspondance.
 
 -extracting specific columns (funds requests, emp_title, annual income, reason for loan)
     - using these columns to do some apriori pattern mining    - put the loan and income values into 'bin' of intervals of 1000
