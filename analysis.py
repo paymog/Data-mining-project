@@ -365,7 +365,7 @@ def main():
 
     # accept data
     # -----------------
-    col, data = load_clean_accept_data("cleanedAcceptData.csv")
+    # col, data = load_clean_accept_data("cleanedAcceptData.csv")
 
     # generate_histograms(data, 0, col[0])
     # generate_histograms(data, 11, col[11], remove_extreme_values=True, remove_count=1000, remove_from_lower=False)
@@ -375,23 +375,24 @@ def main():
     # generate_histograms(data, 4, col[4])
     # cluster_values = cluster_and_scatter_plot(extract_column(data, 11), "Income", 8, n=10000)
 
-    # loan_amount_clusters = kmeans(extract_column(data, 0), num_clusters=10)
+    # loan_amount_clusters = kmeans(extract_column(data, 0), num_clusters=20)
     # add_column(data, loan_amount_clusters)
-    # decision_tree_classifier(data, [0, 3, 4, 7, 9, 10, 11, 20, 22], 14, 12, random_state=0) # make decision tree for loan status
-    # decision_tree_classifier(data, [3, 4, 9, 10, 11, 12, 19, 20, 21, 23, -1], 6, 8, random_state=0, print_confusion_matrix=True)
+    # decision_tree_classifier(data, [3, 4, 7, 9, 10, 11, 20, 22, -1], 14, 12, random_state=0, print_confusion_matrix=True) # make decision tree for loan status
+    # decision_tree_classifier(data, [3, 9, 10, 11, 12, 19, 20, 21, 23, -1], 6, 8, random_state=0, print_confusion_matrix=True) # make decision tree for grade w/o interest
+    # decision_tree_classifier(data, [3, 4, 9, 10, 11, 12, 19, 20, 21, 23, -1], 6, 8, random_state=0, print_confusion_matrix=True) # make decision tree for grade
 
     # reject data
     # -----------------
-    # col, data = load_cleaned_reject_data("cleanedRejectData.csv")
+    col, data = load_cleaned_reject_data("cleanedRejectData.csv")
 
     # generate_histograms(data, 6, col[6], bin_counts=[np.arange(12) - 0.5], normalize=True)
     # generate_histograms(data, 3, col[3])
     # generate_normalized_state_histogram(data, 5, state_dict, 200)
 
     # decision tree classifier for risk_score
-    # risk_score_clusters = kmeans(extract_column(data, 3), num_clusters=10)
-    # add_column(data, risk_score_clusters)
-    # decision_tree_classifier(data, [0, 4, 6], -1, 8, random_state=0)
+    risk_score_clusters = kmeans(extract_column(data, 3), num_clusters=10)
+    add_column(data, risk_score_clusters)
+    decision_tree_classifier(data, [0, 4, 6], -1, 8, random_state=0, print_confusion_matrix=True)
 
 
 if __name__ == "__main__":
